@@ -11,12 +11,12 @@ class ConfigurationReader:
     def __init__(self) -> None:
         self.__configuration_json = {}
         self.__configuration_schema_json = {}
+        self.__read_configuration_schema_file()
 
     def get_configuration_json(self) -> Dict:
         return self.__configuration_json
 
     def read_and_validate_configuration_file(self) -> None:
-        self.__read_configuration_schema_file()
 
         with open(CONFIGURATION_FILE_PATH) as file:
             self.__configuration_json = json.load(file)

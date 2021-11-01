@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import patch
 
-from src.redis.pubsub.configuration import RedisPubSubConfiguration
+from src.configs.configuration import RedisSubscriberConfiguration
 
 
 class Test_RedisPubSubConfiguration(unittest.TestCase):
@@ -17,27 +17,22 @@ class Test_RedisPubSubConfiguration(unittest.TestCase):
             "test_channel_1",
             "test_channel_2"
         ]
-        expected_publisher_channel_name = "test_channel_1"
 
         mock_configuration_reader.get_configuration_json.return_value = {
-            "redis_pub_sub_configuration": {
-                "subscriber_channel_names": expected_subscriber_channel_names,
-                "publisher_channel_name": expected_publisher_channel_name
+            "redis_subscriber_configuration": {
+                "subscriber_channel_names": expected_subscriber_channel_names
             }
         }
 
-        redis_pubsub_configuration = RedisPubSubConfiguration(
+        redis_subscriber_configuration = RedisSubscriberConfiguration(
             configuration_reader=mock_configuration_reader)
 
         # Act
-        actual_subscriber_channel_names = redis_pubsub_configuration.subscriber_channel_names
-        actual_publisher_channel_name = redis_pubsub_configuration.publisher_channel_name
+        actual_subscriber_channel_names = redis_subscriber_configuration.subscriber_channel_names
 
         # Assert
         self.assertEqual(actual_subscriber_channel_names,
                          expected_subscriber_channel_names)
-        self.assertEqual(actual_publisher_channel_name,
-                         expected_publisher_channel_name)
 
 
 if __name__ == '__main__':

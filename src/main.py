@@ -36,18 +36,15 @@ def setup_mtd_controller(configuration_reader: ConfigurationReader,
     return mtd_controller
 
 
-def setup_redis(configuration_reader: ConfigurationReader,
-                mtd_controller: MtdController) -> RedisSubscriber:
+def setup_redis(configuration_reader: ConfigurationReader) -> RedisSubscriber:
     redis_client_configuration = RedisClientConfiguration(
         configuration_reader=configuration_reader)
 
     redis_subscriber_configuration = RedisSubscriberConfiguration(
         configuration_reader=configuration_reader)
 
-    redis_subscriber = RedisSubscriber(
-        redis_client_configuration=redis_client_configuration,
-        redis_subscriber_configuration=redis_subscriber_configuration,
-        mtd_controller=mtd_controller)
+    redis_subscriber = RedisSubscriber(redis_client_configuration=redis_client_configuration,
+                                       redis_subscriber_configuration=redis_subscriber_configuration)
 
     return redis_subscriber
 

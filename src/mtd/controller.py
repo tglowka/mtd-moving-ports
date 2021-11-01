@@ -1,5 +1,5 @@
 from nftables.nftables import Nftables
-from redis.subscriber import RedisSubscriber
+from src.redis.subscriber import RedisSubscriber
 from src.mtd.nftables_controller import NftablesController
 from src.mtd.rules_generator import RulesGenerator
 from src.configs.configuration import MtdControllerConfiguration

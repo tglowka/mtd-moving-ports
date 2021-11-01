@@ -145,12 +145,12 @@ class RedisClientConfiguration:
 
 class RedisSubscriberConfiguration:
 
-    REDIS_PUB_SUB_CONFIGURATION = "redis_pub_sub_configuration"
+    REDIS_SUBSCRIBER_CONFIGURATION = "redis_subscriber_configuration"
     SUBSCRIBER_CHANNEL_NAMES = "subscriber_channel_names"
 
     def __init__(self,
                  configuration_reader: ConfigurationReader):
         self.__redis_pub_sub_configuration = configuration_reader.get_configuration_json()[
-            RedisSubscriberConfiguration.REDIS_PUB_SUB_CONFIGURATION]
+            RedisSubscriberConfiguration.REDIS_SUBSCRIBER_CONFIGURATION]
         self.subscriber_channel_names = self.__redis_pub_sub_configuration[
             RedisSubscriberConfiguration.SUBSCRIBER_CHANNEL_NAMES]

@@ -1,7 +1,7 @@
 import unittest
 from unittest import mock
 from unittest.mock import mock_open, patch
-from src.mtd.configuration import MtdControllerConfiguration
+from src.configs.configuration import MtdControllerConfiguration
 
 class Test_MtdControllerConfiguration(unittest.TestCase):
 

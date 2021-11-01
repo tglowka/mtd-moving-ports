@@ -22,7 +22,7 @@
       },
       "required": ["host", "port", "db", "charset", "decode_responses"]
     },
-    "redis_pub_sub_configuration": {
+    "redis_subscriber_configuration": {
       "type": "object",
       "properties": {
         "subscriber_channel_names": {
@@ -97,7 +97,7 @@
   },
   "required": [
     "redis_client_configuration",
-    "redis_pub_sub_configuration",
+    "redis_subscriber_configuration",
     "mtd_controller_configuration"
   ]
 }

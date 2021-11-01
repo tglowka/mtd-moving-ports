@@ -10,18 +10,6 @@ class Test_ConfigurationReader(unittest.TestCase):
     @classmethod
     def setUpClass(self):
         self.invalid_configuration_json = {
-            "logfiles_watcher_configuration": {
-                "directory_to_watch": "/home/tglowka2/Desktop/msc/msc/logs/proactive_mtd/",
-                "regexes": [
-                    "^\/home\/tglowka2\/Desktop\/msc\/msc\/logs\/proactive_mtd\/*"
-                ],
-                "ignore_regexes": [
-                    "^.*tmp4$"
-                ],
-                "ignore_directories": True,
-                "case_sensitive": False,
-                "go_recursively": True
-            },
             "redis_client_configuration": {
                 "host": "127.0.0.1",
                 "port": 6379,
@@ -29,12 +17,11 @@ class Test_ConfigurationReader(unittest.TestCase):
                 "charset": "utf-8",
                 "decode_responses": True
             },
-            "redis_pub_sub_configuration": {
+            "redis_subscriber_configuration": {
                 "subscriber_channel_names": [
                     "test_channel_1",
                     "test_channel_2"
-                ],
-                "publisher_channel_name": "test_channel_1"
+                ]
             },
             "mtd_controller_configuration": {
                 "nft_startup_script_path": "/home/tglowka2/Desktop/msc/msc/src/configs/setup/nft_startup.nft",
@@ -58,18 +45,6 @@ class Test_ConfigurationReader(unittest.TestCase):
             }
         }
         self.valid_configuration_json = {
-            "logfiles_watcher_configuration": {
-                "directory_to_watch": "/home/tglowka2/Desktop/msc/msc/logs/proactive_mtd/",
-                "regexes": [
-                    "^\/home\/tglowka2\/Desktop\/msc\/msc\/logs\/proactive_mtd\/*"
-                ],
-                "ignore_regexes": [
-                    "^.*tmp4$"
-                ],
-                "ignore_directories": True,
-                "case_sensitive": False,
-                "go_recursively": True
-            },
             "redis_client_configuration": {
                 "host": "127.0.0.1",
                 "port": 6379,
@@ -77,12 +52,11 @@ class Test_ConfigurationReader(unittest.TestCase):
                 "charset": "utf-8",
                 "decode_responses": True
             },
-            "redis_pub_sub_configuration": {
+            "redis_subscriber_configuration": {
                 "subscriber_channel_names": [
                     "test_channel_1",
                     "test_channel_2"
-                ],
-                "publisher_channel_name": "test_channel_1"
+                ]
             },
             "mtd_controller_configuration": {
                 "nft_startup_script_path": "/home/tglowka2/Desktop/msc/msc/src/configs/setup/nft_startup.nft",

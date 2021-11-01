@@ -6,26 +6,14 @@
     "charset": "utf-8",
     "decode_responses": true
   },
-  "redis_pub_sub_configuration": {
+  "redis_subscriber_configuration": {
     "subscriber_channel_names": ["test_channel_1", "test_channel_2"]
   },
   "mtd_controller_configuration": {
-    "nft_startup_script_path": "/home/tglowka2/Desktop/msc/src/configs/setup/nft_startup_commands.json",
-    "nft_address_rules_script_path": "/home/tglowka2/Desktop/msc/src/configs/setup/nft_address_rules.json",
-    "max_port_number": 1300,
+    "nft_startup_script_path": "/home/tglowka2/Desktop/Nftables/mtd-moving-ports/src/configs/setup/nft_startup_commands.json",
+    "nft_address_rules_script_path": "/home/tglowka2/Desktop/Nftables/mtd-moving-ports/src/configs/setup/nft_address_rules.json",
+    "max_port_number": 10000,
     "all_used_ports": [
-      {
-        "port": 21,
-        "protocol": "tcp"
-      },
-      {
-        "port": 22,
-        "protocol": "tcp"
-      },
-      {
-        "port": 80,
-        "protocol": "tcp"
-      },
       {
         "port": 1250,
         "protocol": "tcp"
@@ -37,14 +25,10 @@
     ],
     "watched_addresses": [
       {
-        "address": "192.168.1.10",
-        "ports_to_ignore": []
-      },
-      {
-        "address": "192.168.1.200",
+        "address": "192.168.23.130",
         "ports_to_ignore": [
           {
-            "port": 80,
+            "port": 1300,
             "protocol": "tcp"
           }
         ]
