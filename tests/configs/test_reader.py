@@ -24,8 +24,8 @@ class Test_ConfigurationReader(unittest.TestCase):
                 ]
             },
             "mtd_controller_configuration": {
-                "nft_startup_script_path": "/home/tglowka2/Desktop/msc/msc/src/configs/setup/nft_startup.nft",
-                "nft_address_rules_script_path": "/home/tglowka2/Desktop/msc/msc/src/configs/setup/nft_address_rules.nft",
+                "nft_startup_script_path": "./src/configs/setup/nft_startup.nft",
+                "nft_address_rules_script_path": "./src/configs/setup/nft_address_rules.nft",
                 "max_port_number": 1300,
                 "watched_addresses": [
                     {
@@ -59,8 +59,8 @@ class Test_ConfigurationReader(unittest.TestCase):
                 ]
             },
             "mtd_controller_configuration": {
-                "nft_startup_script_path": "/home/tglowka2/Desktop/msc/msc/src/configs/setup/nft_startup.nft",
-                "nft_address_rules_script_path": "/home/tglowka2/Desktop/msc/msc/src/configs/setup/nft_address_rules.nft",
+                "nft_startup_script_path": "./src/configs/setup/nft_startup.nft",
+                "nft_address_rules_script_path": "./src/configs/setup/nft_address_rules.nft",
                 "max_port_number": 1300,
                 "all_used_ports": [
                     {
