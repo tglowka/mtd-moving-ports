@@ -1,34 +1,36 @@
 from typing import Dict, Set
 from src.configs.reader import ConfigurationReader
 
-MTD_CONTROLLER_CONFIGURATION = "mtd_controller_configuration"
-ALL_USED_PORTS = "all_used_ports"
-WATCHED_ADDRESSES = "watched_addresses"
-NFT_STARTUP_SCRIPT_PATH = "nft_startup_script_path"
-NFT_ADDRESS_RULES_SCRIPT_PATH = "nft_address_rules_script_path"
-MAX_PORT_NUMBER = "max_port_number"
-ADDRESS = "address"
-PORT = "port"
-PORTS_TO_IGNORE = "ports_to_ignore"
-PROTOCOL = "protocol"
-TCP = "TCP"
-UDP = "UDP"
-
 
 class MtdControllerConfiguration:
+
+    MTD_CONTROLLER_CONFIGURATION = "mtd_controller_configuration"
+    ALL_USED_PORTS = "all_used_ports"
+    WATCHED_ADDRESSES = "watched_addresses"
+    NFT_STARTUP_SCRIPT_PATH = "nft_startup_script_path"
+    NFT_ADDRESS_RULES_SCRIPT_PATH = "nft_address_rules_script_path"
+    MAX_PORT_NUMBER = "max_port_number"
+    ADDRESS = "address"
+    PORT = "port"
+    PORTS_TO_IGNORE = "ports_to_ignore"
+    PROTOCOL = "protocol"
+    TCP = "TCP"
+    UDP = "UDP"
 
     def __init__(self,
                  configuration_reader: ConfigurationReader) -> None:
         self.__mtd_controller_configuration = configuration_reader.get_configuration_json()[
-            MTD_CONTROLLER_CONFIGURATION]
-
-        self.__all_used_ports = self.__mtd_controller_configuration[ALL_USED_PORTS]
-        self.__watched_addresses = self.__mtd_controller_configuration[WATCHED_ADDRESSES]
+            MtdControllerConfiguration.MTD_CONTROLLER_CONFIGURATION]
+        self.__all_used_ports = self.__mtd_controller_configuration[
+            MtdControllerConfiguration.ALL_USED_PORTS]
+        self.__watched_addresses = self.__mtd_controller_configuration[
+            MtdControllerConfiguration.WATCHED_ADDRESSES]
         self.__nft_startup_script_path = self.__mtd_controller_configuration[
-            NFT_STARTUP_SCRIPT_PATH]
+            MtdControllerConfiguration.NFT_STARTUP_SCRIPT_PATH]
         self.__nft_address_rules_script_path = self.__mtd_controller_configuration[
-            NFT_ADDRESS_RULES_SCRIPT_PATH]
-        self.__max_port_number = self.__mtd_controller_configuration[MAX_PORT_NUMBER]
+            MtdControllerConfiguration.NFT_ADDRESS_RULES_SCRIPT_PATH]
+        self.__max_port_number = self.__mtd_controller_configuration[
+            MtdControllerConfiguration.MAX_PORT_NUMBER]
 
     def get_max_port_numer(self) -> int:
         return self.__max_port_number
@@ -44,12 +46,12 @@ class MtdControllerConfiguration:
         watched_addresses = {}
 
         for watched_address in self.__watched_addresses:
-            address = watched_address[ADDRESS]
+            address = watched_address[MtdControllerConfiguration.ADDRESS]
 
             if address not in watched_addresses:
                 watched_addresses[address] = {}
 
-            ports_to_ignore = watched_address[PORTS_TO_IGNORE]
+            ports_to_ignore = watched_address[MtdControllerConfiguration.PORTS_TO_IGNORE]
 
             grouped_ports_by_protocol = self.__get_grouped_ports_by_protocol(
                 port_protocol_pair_list=ports_to_ignore)
@@ -96,12 +98,13 @@ class MtdControllerConfiguration:
 
         return file_content
 
-    def __get_grouped_ports_by_protocol(self, port_protocol_pair_list) -> Dict[str, Set[int]]:
+    def __get_grouped_ports_by_protocol(self,
+                                        port_protocol_pair_list) -> Dict[str, Set[int]]:
         grouped_ports = {}
 
         for port_protocol_pair in port_protocol_pair_list:
-            protocol = port_protocol_pair[PROTOCOL]
-            port = port_protocol_pair[PORT]
+            protocol = port_protocol_pair[MtdControllerConfiguration.PROTOCOL]
+            port = port_protocol_pair[MtdControllerConfiguration.PORT]
 
             if(protocol not in grouped_ports):
                 grouped_ports[protocol] = set()
@@ -117,3 +120,37 @@ class MtdControllerConfiguration:
             file_content = file.read()
 
         return file_content
+
+
+class RedisClientConfiguration:
+
+    REDIS_CLIENT_CONFIGURATION = "redis_client_configuration"
+    HOST = "host"
+    PORT = "port"
+    DB = "db"
+    CHARSET = "charset"
+    DECODE_RESPONSES = "decode_responses"
+
+    def __init__(self,
+                 configuration_reader: ConfigurationReader):
+        self.__redis_client_configuration = configuration_reader.get_configuration_json()[
+            RedisClientConfiguration.REDIS_CLIENT_CONFIGURATION]
+        self.host = self.__redis_client_configuration[RedisClientConfiguration.HOST]
+        self.port = self.__redis_client_configuration[RedisClientConfiguration.PORT]
+        self.db = self.__redis_client_configuration[RedisClientConfiguration.DB]
+        self.charset = self.__redis_client_configuration[RedisClientConfiguration.CHARSET]
+        self.decode_responses = self.__redis_client_configuration[
+            RedisClientConfiguration.DECODE_RESPONSES]
+
+
+class RedisSubscriberConfiguration:
+
+    REDIS_PUB_SUB_CONFIGURATION = "redis_pub_sub_configuration"
+    SUBSCRIBER_CHANNEL_NAMES = "subscriber_channel_names"
+
+    def __init__(self,
+                 configuration_reader: ConfigurationReader):
+        self.__redis_pub_sub_configuration = configuration_reader.get_configuration_json()[
+            RedisSubscriberConfiguration.REDIS_PUB_SUB_CONFIGURATION]
+        self.subscriber_channel_names = self.__redis_pub_sub_configuration[
+            RedisSubscriberConfiguration.SUBSCRIBER_CHANNEL_NAMES]

@@ -10,7 +10,9 @@ NFTABLES = "nftables"
 
 
 class NftablesController:
-    def __init__(self, rules_generator: RulesGenerator, nftables: Nftables) -> None:
+    def __init__(self,
+                 rules_generator: RulesGenerator,
+                 nftables: Nftables) -> None:
         self.__rules_generator = rules_generator
         self.__nftables = nftables
 
@@ -47,7 +49,10 @@ class NftablesController:
     def __validate_nftables_json(self) -> None:
         self.__nftables.json_validate(self.__nftables_json)
 
-    def __validate_nftables_output(self, rc, output, error) -> None:
+    def __validate_nftables_output(self,
+                                   rc,
+                                   output,
+                                   error) -> None:
         if rc != 0:
             print(f"Validate nftables output - error: {error}", flush=True)
             raise NftablesRcException()

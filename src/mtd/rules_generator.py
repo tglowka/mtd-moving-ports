@@ -1,6 +1,6 @@
 import secrets
 from typing import List, Set
-from src.mtd.configuration import MtdControllerConfiguration
+from src.configs.configuration import MtdControllerConfiguration
 
 NFT_SOURCE_ADDRESS_TOKEN = "{{SOURCE_ADDRESS}}"
 NFT_DESTINATION_PORT_TOKEN = "\"{{DESTINATION_PORT}}\""
@@ -9,14 +9,13 @@ NFT_PROTOCOL_TOKEN = "{{PROTOCOL}}"
 
 
 class RulesGenerator:
-    def __init__(self, mtd_controller_configuration: MtdControllerConfiguration) -> None:
-        self.__mtd_controller_configuration = mtd_controller_configuration
-
-        self.__max_port_number = self.__mtd_controller_configuration.get_max_port_numer()
-        self.__all_used_ports_by_protocol = self.__mtd_controller_configuration.get_all_used_ports_by_protocol()
-        self.__ports_to_shuffle_by_address_and_protocol = self.__mtd_controller_configuration.get_ports_to_shuffle_by_address_and_protocol()
-        self.__nft_startup_template = self.__mtd_controller_configuration.get_nft_startup_file_content_as_string()
-        self.__nft_address_rules_template = self.__mtd_controller_configuration.get_nft_address_rules_content_as_string()
+    def __init__(self,
+                 mtd_controller_configuration: MtdControllerConfiguration) -> None:
+        self.__max_port_number = mtd_controller_configuration.get_max_port_numer()
+        self.__all_used_ports_by_protocol = mtd_controller_configuration.get_all_used_ports_by_protocol()
+        self.__ports_to_shuffle_by_address_and_protocol = mtd_controller_configuration.get_ports_to_shuffle_by_address_and_protocol()
+        self.__nft_startup_template = mtd_controller_configuration.get_nft_startup_file_content_as_string()
+        self.__nft_address_rules_template = mtd_controller_configuration.get_nft_address_rules_content_as_string()
 
     def get_nftables_startup_commands(self) -> str:
         return self.__nft_startup_template
@@ -45,7 +44,9 @@ class RulesGenerator:
 
         return rules_list
 
-    def __choose_closed_ports(self, count, protocol) -> Set[int]:
+    def __choose_closed_ports(self,
+                              count,
+                              protocol) -> Set[int]:
         closed_ports = set()
 
         while(len(closed_ports) < count):
@@ -54,19 +55,26 @@ class RulesGenerator:
             if (port_number == 0):
                 continue
 
-            if (self.__check_all_used_ports_contains(protocol=protocol, port_number=port_number)):
+            if (self.__check_all_used_ports_contains(protocol=protocol,
+                                                     port_number=port_number)):
                 continue
 
             closed_ports.add(port_number)
 
         return closed_ports
 
-    def __check_all_used_ports_contains(self, protocol: str, port_number: int) -> bool:
+    def __check_all_used_ports_contains(self,
+                                        protocol: str,
+                                        port_number: int) -> bool:
         contains = (protocol in self.__all_used_ports_by_protocol and
                     port_number in self.__all_used_ports_by_protocol[protocol])
         return contains
 
-    def __get_template_with_replaced_tokens(self, source_address: str, destination_port: int, redirected_port: int, protocol: str) -> str:
+    def __get_template_with_replaced_tokens(self,
+                                            source_address: str,
+                                            destination_port: int,
+                                            redirected_port: int,
+                                            protocol: str) -> str:
         rules = ""
 
         rules = self.__nft_address_rules_template \

@@ -1,5 +1,5 @@
-import json
 from typing import Dict
+import json
 import jsonschema
 
 CONFIGURATION_FILE_PATH = "./src/configs/setup/configuration.json"
@@ -12,12 +12,12 @@ class ConfigurationReader:
         self.__configuration_json = {}
         self.__configuration_schema_json = {}
 
-        self.__read_configuration_schema_file()
-
     def get_configuration_json(self) -> Dict:
         return self.__configuration_json
 
     def read_and_validate_configuration_file(self) -> None:
+        self.__read_configuration_schema_file()
+
         with open(CONFIGURATION_FILE_PATH) as file:
             self.__configuration_json = json.load(file)
 
