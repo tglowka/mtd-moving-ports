@@ -1,7 +1,0 @@
-netstat -tulpn
-
-python3 -m src.main sub &>> '/home/tglowka2/Desktop/msc/msc/logs/sub/logs'
-python3 -m proactive_mtd_launcher.main -l 3 -u 5 -f '/home/tglowka2/Desktop/msc/msc/logs/proactive_mtd/logs'
-
-ps aux | grep 'python3 \-m'
-pkill -f 'python3 -m'
