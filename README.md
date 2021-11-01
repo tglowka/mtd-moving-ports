@@ -28,7 +28,6 @@ The latter one is the attacker machine. First machine configuration requires the
 ## 3.1 First machine - MTD solution
 
 First machine should perform following:
-- clone repo,
 - install nftables, pip and python requirements,
 - setup config file, 
 - run redis,
@@ -86,5 +85,5 @@ Run test scan against the target machine, i.e. MTD solution machine. Simple SYN 
 nmap <first_machine_ip> -sS -p1-10000
 ```
 Execute SYN scan few times and see, that not ignored ports are moving.
-It should work as well for Connect (-sT), XMAS (-sX), FIN (-sF) and NULL (-sN) scans as well.
+It should work for Connect (-sT), XMAS (-sX), FIN (-sF) and NULL (-sN) scans as well.
 It is also possible that the scan results will show less open ports than currently open on the target machine.
