@@ -22,8 +22,8 @@
     "nftables_service_configuration": {
       "type": "object",
       "properties": {
-        "nft_startup_script_path": { "type": "string" },
-        "nft_address_rules_script_path": { "type": "string" },
+        "nft_startup_commands_path": { "type": "string" },
+        "nft_address_rules_path": { "type": "string" },
         "max_port_number": { "type": "number" },
         "tcp_ports": { "type": "array" },
         "watched_addresses": {
@@ -39,8 +39,8 @@
         }
       },
       "required": [
-        "nft_startup_script_path",
-        "nft_address_rules_script_path",
+        "nft_startup_commands_path",
+        "nft_address_rules_path",
         "max_port_number",
         "tcp_ports",
         "watched_addresses"

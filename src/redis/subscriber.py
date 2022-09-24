@@ -1,5 +1,5 @@
 import redis
-from configs.configs import RedisConnectionConfig, RedisSubscriberConfig
+from src.configs.configs import RedisConnectionConfig, RedisSubscriberConfig
 
 
 class RedisSubscriber:

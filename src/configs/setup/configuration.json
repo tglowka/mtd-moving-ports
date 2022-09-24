@@ -10,8 +10,8 @@
     "subscriber_channel_names": ["test_channel_1", "test_channel_2"]
   },
   "nftables_service_configuration": {
-    "nft_startup_script_path": "./src/configs/setup/nft_startup_commands.json",
-    "nft_address_rules_script_path": "./src/configs/setup/nft_address_rules.json",
+    "nft_startup_commands_path": "./src/configs/setup/nft_startup_commands.json",
+    "nft_address_rules_path": "./src/configs/setup/nft_address_rules.json",
     "max_port_number": 1050,
     "tcp_ports": [80, 22],
     "watched_addresses": [

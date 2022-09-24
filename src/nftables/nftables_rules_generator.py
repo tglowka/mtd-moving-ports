@@ -1,5 +1,5 @@
 import secrets
-from typing import List, Set
+from typing import List, Set, Dict
 from src.configs.configs import NftablesConfig
 
 
@@ -11,16 +11,18 @@ class NftablesRulesGenerator:
         self.__NFT_REDIRECTED_PORT_TOKEN = "\"{{REDIRECTED_PORT}}\""
         self.__NFT_PROTOCOL_TOKEN = "{{PROTOCOL}}"
         self.__protocol = 'tcp'
-
+        self.__IP = "ip"
+        self.__TCP_IGNORE = "tcp_ignore"
+        
         self.__nftables_config = nftables_config
 
     def get_nftables_startup_commands(self) -> str:
-        return self.__nftables_config.get_nft_startup_content()
+        return self.__read_file_as_string(self.__nftables_config.get_nft_startup_commands_path())
 
     def generate_nftables_address_rules(self) -> List[str]:
         rules_list = []
 
-        for ip, ports in self.__nftables_config.get_ports_to_shuffle_by_address().items():
+        for ip, ports in self.__get_ports_to_shuffle_by_address().items():
             destination_ports = ports
             redirection_ports = self.__choose_closed_ports(len(ports))
 
@@ -32,6 +34,28 @@ class NftablesRulesGenerator:
                     protocol=self.__protocol))
 
         return rules_list
+
+    def __get_ports_to_shuffle_by_address(self) -> Dict[str, Set[int]]:
+        results = {}
+
+        watched_addresses = self.__get_watched_addresses_by_address()
+        tcp_ports = self.__nftables_config.get_tcp_ports()
+
+        for ip, ports_to_ignore in watched_addresses:
+            results[ip] = tcp_ports - ports_to_ignore
+
+        return results
+
+    def __get_watched_addresses_by_address(self) -> Dict[str, Set[int]]:
+        watched_addresses = {}
+        addresses = self.__nftables_config.get_watched_addresses()
+
+        for address in addresses:
+            ip = address[self.__IP]
+            ports_to_ignore = set(address[self.__TCP_IGNORE])
+            watched_addresses[ip] = ports_to_ignore
+
+        return watched_addresses
 
     def __choose_closed_ports(self, count) -> Set[int]:
         closed_ports = set()
@@ -58,10 +82,21 @@ class NftablesRulesGenerator:
                                             destination_port: int,
                                             redirected_port: int,
                                             protocol: str) -> str:
-        rules = self.__nftables_config.get_nft_address_rules_content() \
+        rules = self.__get_nft_address_rules_content() \
             .replace(self.__NFT_SOURCE_ADDRESS_TOKEN, source_address) \
             .replace(self.__NFT_DESTINATION_PORT_TOKEN, str(destination_port)) \
             .replace(self.__NFT_REDIRECTED_PORT_TOKEN, str(redirected_port)) \
             .replace(self.__NFT_PROTOCOL_TOKEN, protocol)
 
         return rules
+
+    def __get_nft_address_rules_content(self) -> str:
+        return self.__read_file_as_string(self.__nftables_config.get_nft_address_rules_path())
+
+    def __read_file_as_string(self, file_path) -> str:
+        file_content = ""
+
+        with open(file_path) as file:
+            file_content = file.read()
+
+        return file_content
