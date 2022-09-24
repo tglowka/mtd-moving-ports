@@ -14,7 +14,7 @@
     "nft_address_rules_script_path": "./src/configs/setup/nft_address_rules.json",
     "max_port_number": 1050,
     "tcp_ports": [80, 22],
-    "watched_addresses": [
+    "XXXXXXXXXXXXXXXXXXXXXXXXXXX": [
       {
         "ip": "192.168.23.130",
         "tcp_ignore": [80]

@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import patch
 
-from src.mtd.nftables_controller import NftablesController, NftablesOutputException, NftablesRcException
+from mtd.nftables_service import NftablesController, NftablesOutputException, NftablesRcException
 
 
 class Test_NftablesController(unittest.TestCase):

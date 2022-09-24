@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import patch
 
-from src.configs.configuration import RedisClientConfiguration
+from configs.configs import RedisClientConfiguration
 
 
 class Test_RedisClientConfiguration(unittest.TestCase):

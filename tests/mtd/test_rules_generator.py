@@ -1,10 +1,10 @@
 import unittest
 from unittest.mock import mock_open, patch
 
-from src.mtd.rules_generator import NFT_DESTINATION_PORT_TOKEN, NFT_PROTOCOL_TOKEN, NFT_REDIRECTED_PORT_TOKEN, NFT_SOURCE_ADDRESS_TOKEN
+from mtd.nftables_rules_generator import NFT_DESTINATION_PORT_TOKEN, NFT_PROTOCOL_TOKEN, NFT_REDIRECTED_PORT_TOKEN, NFT_SOURCE_ADDRESS_TOKEN
 
-from src.configs.configuration import MtdControllerConfiguration
-from src.mtd.rules_generator import RulesGenerator
+from configs.configs import MtdControllerConfiguration
+from mtd.nftables_rules_generator import RulesGenerator
 
 NFT_ADDRESS_RULES = "add rule ip nat prerouting ip saddr {{SOURCE_ADDRESS}} {{PROTOCOL}} dport \"{{DESTINATION_PORT}}\" redirect to :\"{{REDIRECTED_PORT}}\""
 

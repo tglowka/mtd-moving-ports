@@ -2,31 +2,32 @@ from typing import Dict
 import json
 import jsonschema
 
-CONFIGURATION_FILE_PATH = "./src/configs/setup/configuration.json"
-CONFIGURATION_SCHEMA_FILE_PATH = "./src/configs/setup/configuration_schema.json"
 
+class ConfigReader:
 
-class ConfigurationReader:
+    def __init__(self, schema_path, config_path) -> None:
+        self.__schema_path = schema_path
+        self.__config_path = config_path
+        self.__config = {}
+        self.__read_and_validate_config()
 
-    def __init__(self) -> None:
-        self.__configuration_json = {}
-        self.__configuration_schema_json = {}
-        self.__read_configuration_schema_file()
+    def get_config(self) -> Dict:
+        return self.__config
 
-    def get_configuration_json(self) -> Dict:
-        return self.__configuration_json
+    def __read_and_validate_config(self) -> None:
+        schema = {}
+        config = {}
 
-    def read_and_validate_configuration_file(self) -> None:
+        # read json schema
+        with open(self.__schema_path) as file:
+            schema = json.load(file)
 
-        with open(CONFIGURATION_FILE_PATH) as file:
-            self.__configuration_json = json.load(file)
+        # read json
+        with open(self.__config_path) as file:
+            config = json.load(file)
 
-        self.__validate_configuration_json()
+        # validate json using schema
+        jsonschema.validate(instance=config,
+                            schema=schema)
 
-    def __read_configuration_schema_file(self) -> None:
-        with open(CONFIGURATION_SCHEMA_FILE_PATH) as file:
-            self.__configuration_schema_json = json.load(file)
-
-    def __validate_configuration_json(self) -> None:
-        jsonschema.validate(instance=self.__configuration_json,
-                            schema=self.__configuration_schema_json)
+        self.__config = config
