@@ -1,0 +1,12 @@
+FROM ubuntu:22.04
+
+WORKDIR /mtd
+
+RUN apt-get update && apt-get install -y python3 && \ 
+    apt-get install -y python3-pip && \
+    apt-get install -y nftables && \
+    apt-get install -y python3-nftables
+
+COPY ./ .
+
+RUN pip3 install -r requirements.txt

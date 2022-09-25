@@ -1,6 +1,6 @@
 {
   "redis_connection_configuration": {
-    "host": "127.0.0.1",
+    "host": "10.5.0.4",
     "port": 6379,
     "db": 0,
     "charset": "utf-8",
@@ -16,7 +16,7 @@
     "tcp_ports": [80, 22],
     "watched_addresses": [
       {
-        "ip": "192.168.23.130",
+        "ip": "10.5.0.3",
         "tcp_ignore": [80]
       }
     ]

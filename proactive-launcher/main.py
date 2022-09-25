@@ -11,15 +11,19 @@ parser.add_argument("--lower_boundary_seconds", "-l",
 parser.add_argument("--uppper_boundary_seconds", "-u",
                     help="set the range upper boundary in seconds", type=int)
 
+parser.add_argument("--redis_ip", "-r",
+                    help="Redis IP", type=str)
+
 args = parser.parse_args()
 
-REDIS_CONNECTION = redis.Redis(host="127.0.0.1",
+REDIS_CONNECTION = redis.Redis(host=args.redis_ip,
                                port=6379,
                                db=0,
                                charset="utf-8",
                                decode_responses=True)
 
 REDIS_CHANNEL = "test_channel_1"
+
 
 def main():
     lower_boundary_seconds = args.lower_boundary_seconds
