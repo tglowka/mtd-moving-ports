@@ -12,20 +12,20 @@ class NftablesRulesGenerator:
         self.__NFT_PROTOCOL_TOKEN = "{{PROTOCOL}}"
         self.__protocol = 'tcp'
 
-        self.__nftables_config = NftablesConfigParser(nftables_config)
-        self.__nftables_config_parser = nftables_config_parser
+        self.__nftables_config = nftables_config
+        self.__nftables_config_parser = NftablesConfigParser(nftables_config)
 
     def get_nftables_startup_commands(self) -> str:
-        return self.__nftables_config_parser.get_nft_address_rules_content()
+        return self.__nftables_config_parser.get_nft_startup_commands_content()
 
     def generate_nftables_address_rules(self) -> List[str]:
         rules_list = []
 
-        for ip, ports in self.__nftables_config_parser.__get_ports_to_shuffle_by_address().items():
+        for ip, ports in self.__nftables_config_parser.get_ports_to_shuffle_by_address().items():
             destination_ports = ports
             redirection_ports = self.__choose_closed_ports(len(ports))
 
-            for destination_port, redirection_port in range(zip(destination_ports, redirection_ports)):
+            for destination_port, redirection_port in zip(destination_ports, redirection_ports):
                 rules_list.append(self.__get_template_with_replaced_tokens(
                     source_address=ip,
                     destination_port=destination_port,

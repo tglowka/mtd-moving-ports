@@ -23,7 +23,7 @@ def get_nftables_service(config_reader: ConfigReader) -> NftablesService:
 def get_redis_subscriber(config_reader: ConfigReader) -> RedisSubscriber:
     connection_config = RedisConnectionConfig(config_reader)
     subscriber_config = RedisSubscriberConfig(config_reader)
-    return RedisSubscriber(connection_config, subscriber_config)
+    return RedisSubscriber(subscriber_config, connection_config)
 
 
 if __name__ == "__main__":
