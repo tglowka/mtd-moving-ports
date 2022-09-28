@@ -1,6 +1,6 @@
 {
   "redis_connection_configuration": {
-    "host": "10.0.0.4",
+    "host": "10.0.0.5",
     "port": 6379,
     "db": 0,
     "charset": "utf-8",

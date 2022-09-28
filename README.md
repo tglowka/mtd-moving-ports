@@ -16,15 +16,16 @@ The answers are as follows:
 - When? - every T seconds, where ```L <= T <= U```, L and U are provided at program startup.
 
 # 3. Architecture
-The PoC consists of three docker containers: \
+The PoC consists of four docker containers: \
 <img src="./pic/architecture.png" width="400">
 
-`nmap` container is used to scan the network, namely `nftables` container. 
-`nftables` container hosts the PoC that applies [nftables](https://wiki.nftables.org/wiki-nftables/index.php/Main_Page) rules to redirect network traffic and mislead adversaries (`nmap` container). `nftables` container also hosts an application that is able to send messages to the `redis` container. The PoC subscribes redis topic and each message triggers nftables rules application. Moreover, the `nftables` container has 5 open tcp ports: 1, 2, 3, 4 and 5.
+The `bad-nmap` container is an untrusted and bad actor an is used to scan the network, namely `nftables` container. On the other hand the `good-nmap` is a trusted and good actor that is also used to scan the network. `nftables` container hosts the PoC that applies [nftables](https://wiki.nftables.org/wiki-nftables/index.php/Main_Page) rules to redirect network traffic and mislead adversaries (`bad-nmap` container). `nftables` container also hosts an application that is able to send messages to the `redis` container. The PoC subscribes redis topic and each message triggers nftables rules application. Moreover, the `nftables` container has 5 open tcp ports: 1, 2, 3, 4 and 5.
 
 # 4. Test the solution
 
-To test the solution a linux based machine with docker compose is required. 
+To test the solution a linux based machine with a docker compose is required. 
+
+The PoC is configured to mislead the `bad-nmap` container so that the services listening on `nftables` machine, port numbers: 3, 4, 5, are "moving" from the `bad-nmap` container point of view. Ports 1 and 2 stand still evenin that scenario (this could be changed in the `configuration.json` file but for the sake of the test let's focus on the presented test scenario).  
 
 ## 4.1 Run the PoC
 
@@ -35,16 +36,16 @@ sudo docker-compose up
 
 `nmap` container exited immediately but we will take care of it in a moment.
 
-## 4.2 Nmap
+## 4.2 Bad and Good Nmap
 
 Open second terminal and run:
 ```
-sudo docker-compose run nmap
+sudo docker-compose run bad-nmap
 ```
 
-`nmap` container has [Nmap](https://nmap.org/) tool installed - powerful network discovery tool.
+`bad-nmap` container has [Nmap](https://nmap.org/) tool installed - powerful network discovery tool.
 
-From inside the `nmap` container run the [SYN](https://nmap.org/book/synscan.html) scan against `nftables` container, ports 1...20:
+From inside the `bad-nmap` container run the [SYN](https://nmap.org/book/synscan.html) scan against `nftables` container, ports 1...20:
 ```
 nmap -sS 10.0.0.2 -p1-20
 ```
@@ -57,22 +58,36 @@ Both IP and container name (`nftables`) are valid as communication within a dock
 
 As you can see the scan tells us that there are 5 TCP ports open: 1, 2, 3, 4 and 5.
 
+Open third terminal and run:
+```
+sudo docker-compose run good-nmap
+```
+From inside the `good-nmap` container run the [SYN](https://nmap.org/book/synscan.html) scan against `nftables` container, ports 1...20:
+```
+nmap -sS 10.0.0.2 -p1-20
+```
+or
+```
+nmap -sS nftables -p1-20
+```
+You should see similar results to the previous scan (`bad-nmap` container scan) - 5 TCP ports open: 1, 2, 3, 4 and 5.
+
 ## 4.3 Nftables
 
-Open third terminal and run:
+Open fourth terminal and run:
 ```
 sudo docker-compose exec nftables bash
 ```
 
 `nftables` (as mentioned in the [architecture](Architecture) section), has a python app that is able to send messages to the `redis` container. To send a single message run:
 ```
-python3 -m redis-message-launcher.main -r 10.0.0.4
+python3 -m redis-message-launcher.main -r 10.0.0.5
 ```
 or
 ```
 python3 -m redis-message-launcher.main -r redis
 ```
-Once you send the message, you should see that the `nftables` container received the message (first terminal). Receiving the message means that the nftables rules has been applied. To verify let's run the SYN scan one more time (second terminal - `nmap` container):
+Once you send the message, you should see that the `nftables` container received the message (first terminal). Receiving the message means that the nftables rules has been applied. To verify let's run the SYN scan one more time (second terminal - `bad nmap` container):
 ```
 nmap -sS nftables -p1-20
 ```
@@ -86,12 +101,18 @@ Let's run another message (third terminal - `nftables` container
 python3 -m redis-message-launcher.main -r redis
 ```
 
-and SYN scan one more time (second terminal - `nmap` container):
+and SYN scan one more time (second terminal - `bad-nmap` container):
 
 ```
 nmap -sS nftables -p1-20
 ```
 You should see that the ports (apart from port 1 and 2) are moving!
+
+Now run the same scan but from the third terminal (good and trusted `good-nmap` container)
+```
+nmap -sS nftables -p1-20
+```
+As you can see the open ports from the `good-nmap` container point of view are still the same despite the fact that the `bad-container` sees something completely different.
 
 ## 4.4 Automate messages sending
 Insted of sending messages one by one you can run python app and send messages in intervals (third container - `nftables` container):
