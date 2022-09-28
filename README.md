@@ -20,13 +20,13 @@ The PoC consists of three docker containers: \
 <img src="./pic/architecture.png" width="400">
 
 `nmap` container is used to scan the network, namely `nftables` container. 
-`nftables` container hosts the PoC that applies [nftables](https://wiki.nftables.org/wiki-nftables/index.php/Main_Page) rules to redirect network traffic and mislead adversaries (`nmap` container). `nftables` container also hosts an application that is able to send messages to the `redis` container. The PoC subscribes redis topic and each message triggers nftables rules application. Moreover, the `nftables` container has 5 open tcp ports: 1, 2, 3, 4 and 5. 
+`nftables` container hosts the PoC that applies [nftables](https://wiki.nftables.org/wiki-nftables/index.php/Main_Page) rules to redirect network traffic and mislead adversaries (`nmap` container). `nftables` container also hosts an application that is able to send messages to the `redis` container. The PoC subscribes redis topic and each message triggers nftables rules application. Moreover, the `nftables` container has 5 open tcp ports: 1, 2, 3, 4 and 5.
 
 # 4. Test the solution
 
-To test the solution a linux machine with installed docker compose is required.
+To test the solution a linux based machine with docker compose is required. 
 
-## 4.1 Run PoC
+## 4.1 Run the PoC
 
 Open first terminal and run:
 ```
